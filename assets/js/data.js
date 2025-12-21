@@ -1,6 +1,5 @@
-// assets/js/data.js
 
-// 1. TV Project Data (Items displayed on the TV Screen)
+// 1. TV Project Data 
 const projects = [
     {
         title: "NEON_RIDER",
@@ -22,41 +21,41 @@ const projects = [
     }
 ];
 
-// 2. Archive Data (Items displayed on the VHS Shelf)
+// 2. Archive Data 
 const archives = [
     {
         label: "CSS ARTWORK",
         title: "Pure CSS Portrait",
         desc: "A drawing made entirely of divs and border-radius.",
-        color: "#ff9999", // Soft Red
+        color: "#ff9999",
         links: [{ name: "Code", url: "#" }, { name: "Demo", url: "#" }]
     },
     {
         label: "THREE.JS CUBE",
         title: "3D Cube Spin",
         desc: "First attempt at WebGL lighting and materials.",
-        color: "#a8ffab", // Phosphor Green
+        color: "#a8ffab",
         links: [{ name: "Code", url: "#" }, { name: "Demo", url: "#" }]
     },
     {
         label: "REACT HOOKS",
         title: "Custom Hooks Lib",
         desc: "A collection of useful hooks for fetching data.",
-        color: "#00ccff", // Cyber Blue
+        color: "#00ccff",
         links: [{ name: "Code", url: "#" }, { name: "NPM", url: "#" }]
     },
     {
         label: "GAME JAM 23",
         title: "Space Dodge",
         desc: "48hr game jam entry using Kaboom.js.",
-        color: "#ffcc00", // Bright Yellow
+        color: "#ffcc00", 
         links: [{ name: "Code", url: "#" }, { name: "Play", url: "#" }]
     },
     {
         label: "API SCRAPER",
         title: "News Bot",
         desc: "Python script that aggregates headlines.",
-        color: "#ff3333", // Alert Red
+        color: "#ff3333",
         links: [{ name: "Repo", url: "#" }]
     }
 ];

@@ -2,8 +2,8 @@
 :root {
     --bg-wall: #1a1510;
     --paper-bg: #2a2018;
-    --text-main: #d3c4a9; /* Aged Paper Color */
-    --accent-glow: #a8ffab; /* Phosphor Green */
+    --text-main: #d3c4a9;
+    --accent-glow: #a8ffab; 
     --accent-dim: #2f4f2f;
     --alert-red: #ff3333;
     

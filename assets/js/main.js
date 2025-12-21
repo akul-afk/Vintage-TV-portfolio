@@ -1,6 +1,4 @@
-/**
- * THE ANALOG BROADCAST - MAIN ENGINE
- */
+
 
 // 1. State Management
 let currentChannel = 0;
@@ -37,9 +35,9 @@ function renderArchives() {
     const shelf = document.getElementById('vhs-shelf');
     if (!shelf) return; 
     
-    // 'archives' is globally available from data.js
+    
     shelf.innerHTML = archives.map(tape => {
-        // Correction: Apply dynamic background color for the VHS labels
+    
         const labelStyle = tape.color ? `style="background-color: ${tape.color};"` : "";
         
         return `
@@ -105,7 +103,6 @@ function togglePower() {
 
 // 4. Contact Form Logic
 function initContactForm() {
-    // 1. Initialize EmailJS with your Public Key
     emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY); 
 
     const form = document.getElementById('contact-form');
@@ -115,35 +112,32 @@ function initContactForm() {
     if (!form) return;
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault(); // Stop page reload
+        e.preventDefault(); 
 
-        // Trigger visual feedback immediately
+       
         if (btn) {
             btn.innerText = "TRANSMITTING...";
             btn.disabled = true;
         }
-
-        // Safety check: Only update status if the element exists
         if (status) {
             status.style.color = "var(--accent-glow)";
             status.innerText = "> INITIALIZING UPLINK...";
         }
 
-        // Send the signal through EmailJS
         emailjs.sendForm(
             EMAILJS_CONFIG.SERVICE_ID, 
             EMAILJS_CONFIG.TEMPLATE_ID, 
             form
         )
         .then(() => {
-            // SUCCESS FEEDBACK
+        
             if (btn) btn.innerText = "TRANSMISSION SUCCESS";
             if (status) {
                 status.innerText = "> SIGNAL RECEIVED. ENCRYPTED RESPONSE PENDING.";
             }
             form.reset();
             
-            // Return to standby after 5 seconds
+           
             setTimeout(() => { 
                 if (btn) {
                     btn.innerText = "SEND TRANSMISSION"; 
@@ -153,7 +147,7 @@ function initContactForm() {
             }, 5000);
         })
         .catch((err) => {
-            // ERROR FEEDBACK
+           
             if (btn) btn.innerText = "TRANSMISSION FAILED";
             if (btn) btn.disabled = false;
             
@@ -189,5 +183,5 @@ if (screen) {
 window.addEventListener('DOMContentLoaded', () => {
     renderProject();
     renderArchives();
-    initContactForm(); // Correction: This must be called to enable the form
+    initContactForm(); 
 });
