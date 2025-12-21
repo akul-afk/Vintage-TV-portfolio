@@ -102,19 +102,45 @@ function togglePower() {
 }
 
 // 4. Contact Form Logic
+
 function initContactForm() {
-    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY); 
+    // --- LOCAL DEVELOPMENT OVERRIDE ---
+    
+    // uncomment the block below and enter your IDs manually. 
+    /*
+    window.env = {
+        PUBLIC_KEY: "your_local_public_key",
+        SERVICE_ID: "your_local_service_id",
+        TEMPLATE_ID: "your_local_template_id"
+    };
+    */
+
+    const publicKey = window.env?.PUBLIC_KEY || ""; 
+    const serviceID = window.env?.SERVICE_ID || "";
+    const templateID = window.env?.TEMPLATE_ID || "";
+
+    if (!publicKey || !serviceID || !templateID) {
+        console.warn("Signal Lost: EmailJS credentials missing. Form is in offline mode.");
+        return;
+    }
+
+    emailjs.init(publicKey);
 
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('send-btn');
     const status = document.getElementById('form-status');
+    const honeypot = document.getElementById('honeypot');
 
     if (!form) return;
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
+        if (honeypot && honeypot.value !== "") {
+            if (status) status.innerText = "> ERROR: UNAUTHORIZED ACCESS.";
+            return;
+        }
 
-       
+        // VISUAL FEEDBACK: Start Transmitting
         if (btn) {
             btn.innerText = "TRANSMITTING...";
             btn.disabled = true;
@@ -124,39 +150,32 @@ function initContactForm() {
             status.innerText = "> INITIALIZING UPLINK...";
         }
 
-        emailjs.sendForm(
-            EMAILJS_CONFIG.SERVICE_ID, 
-            EMAILJS_CONFIG.TEMPLATE_ID, 
-            form
-        )
-        .then(() => {
-        
-            if (btn) btn.innerText = "TRANSMISSION SUCCESS";
-            if (status) {
-                status.innerText = "> SIGNAL RECEIVED. ENCRYPTED RESPONSE PENDING.";
-            }
-            form.reset();
-            
-           
-            setTimeout(() => { 
+        // TRANSMISSION
+        emailjs.sendForm(serviceID, templateID, form)
+            .then(() => {
+                if (btn) btn.innerText = "TRANSMISSION SUCCESS";
+                if (status) status.innerText = "> SIGNAL RECEIVED. ENCRYPTED RESPONSE PENDING.";
+                form.reset();
+                
+                setTimeout(() => { 
+                    if (btn) {
+                        btn.innerText = "SEND TRANSMISSION"; 
+                        btn.disabled = false; 
+                    }
+                    if (status) status.innerText = "";
+                }, 5000);
+            })
+            .catch((err) => {
                 if (btn) {
-                    btn.innerText = "SEND TRANSMISSION"; 
-                    btn.disabled = false; 
+                    btn.innerText = "TRANSMISSION FAILED";
+                    btn.disabled = false;
                 }
-                if (status) status.innerText = "";
-            }, 5000);
-        })
-        .catch((err) => {
-           
-            if (btn) btn.innerText = "TRANSMISSION FAILED";
-            if (btn) btn.disabled = false;
-            
-            if (status) {
-                status.style.color = "var(--alert-red)";
-                status.innerText = "> ERROR: SIGNAL LOST. RETRY REQUIRED.";
-            }
-            console.error("Uplink Error:", err);
-        });
+                if (status) {
+                    status.style.color = "var(--alert-red)";
+                    status.innerText = "> ERROR: SIGNAL LOST. RETRY REQUIRED.";
+                }
+                console.error("Uplink Error:", err);
+            });
     });
 }
 
