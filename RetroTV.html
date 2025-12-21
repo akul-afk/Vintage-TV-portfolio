@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | The Analog Broadcast</title>
+    <!-- Fonts: 'VT323' for screen/tech, 'Special Elite' for headers/paper, 'Permanent Marker' for VHS labels -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --bg-wall: #1a1510;
+            --paper-bg: #2a2018;
+            --text-main: #d3c4a9; /* Aged Paper Color */
+            --accent-glow: #a8ffab; /* Phosphor Green */
+            --accent-dim: #2f4f2f;
+            --alert-red: #ff3333;
+            
+            --wood-dark: #3e2723;
+            --wood-light: #5d4037;
+            
+            --font-tech: 'VT323', monospace;
+            --font-paper: 'Special Elite', cursive;
+            --font-marker: 'Permanent Marker', cursive;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-wall);
+            /* Subtle Noise Texture for the wall */
+            background-image: repeating-radial-gradient(#1a1510 0%, #110e0b 100%);
+            color: var(--text-main);
+            font-family: var(--font-paper);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. LAYOUT UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            border-bottom: 1px dashed rgba(211, 196, 169, 0.2);
+        }
+
+        h1, h2, h3 { color: var(--accent-glow); text-shadow: 0 0 5px rgba(168, 255, 171, 0.3); }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--accent-glow);
+            color: var(--accent-glow);
+            font-family: var(--font-tech);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Button Static Glitch Layer */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%);
+            background-size: 200% 200%;
+            opacity: 0;
+            pointer-events: none;
+            animation: noise 0.2s infinite;
+        }
+
+        .btn:hover {
+            background: var(--accent-glow);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .btn:hover::after {
+            opacity: 0.2;
+        }
+
+        /* --- 3. NAVIGATION --- */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(26, 21, 16, 0.95);
+            border-bottom: 1px solid #333;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.5rem; color: #fff; }
+        .logo span { color: var(--accent-glow); }
+
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { font-family: var(--font-tech); font-size: 1.2rem; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--accent-glow); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem auto; font-family: var(--font-tech); }
+        
+        .status-badge {
+            border: 1px solid var(--accent-glow);
+            padding: 5px 10px;
+            font-family: var(--font-tech);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* --- 5. ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .polaroid {
+            background: #fff;
+            padding: 15px 15px 40px 15px;
+            transform: rotate(-3deg);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .polaroid img { width: 100%; filter: grayscale(100%) sepia(20%) contrast(1.2); }
+        .polaroid-caption {
+            color: #333;
+            font-family: 'Special Elite', cursive;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* --- 6. SERVICES (SERVER RACK STACK) --- */
+        .rack-container {
+            background: #111;
+            border: 4px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: inset 0 0 20px #000;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .rack-unit {
+            background: #222;
+            border: 1px solid #000;
+            border-top: 1px solid #444;
+            margin-bottom: 5px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            font-family: var(--font-tech);
+            transition: 0.3s;
+        }
+        
+        .rack-unit:hover {
+            background: #2a2a2a;
+            box-shadow: 0 0 10px rgba(168, 255, 171, 0.1);
+        }
+
+        .rack-bolts {
+            display: flex; flex-direction: column; gap: 30px; margin-right: 20px;
+        }
+        .bolt { width: 10px; height: 10px; background: #555; border-radius: 50%; box-shadow: inset 1px 1px 2px #000; }
+
+        .rack-content { flex-grow: 1; }
+        
+        .rack-title {
+            color: #fff;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px dashed #444;
+            display: inline-block;
+        }
+        
+        .rack-details { color: #888; font-size: 1.1rem; }
+        .rack-details span { color: var(--accent-glow); margin-right: 10px; }
+
+        .rack-status {
+            display: flex; gap: 5px; margin-left: 20px;
+        }
+        .led {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #333;
+            box-shadow: inset 1px 1px 2px #000;
+        }
+        .led.green { background: #0f0; box-shadow: 0 0 5px #0f0; animation: blink 3s infinite; }
+        .led.red { background: #f00; box-shadow: 0 0 5px #f00; animation: blink 4s infinite; }
+        .led.yellow { background: #ff0; box-shadow: 0 0 5px #ff0; animation: blink 1s infinite; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* --- 7. PROJECTS (THE TV SET) --- */
+        #projects {
+            background: radial-gradient(circle at center, #251e18 0%, #0d0a08 100%);
+            perspective: 1000px;
+            overflow: hidden; /* Keep TV glow contained */
+        }
+        
+        .tv-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Re-using your TV CSS with adjustments for layout */
+        .tv-set {
+            position: relative;
+            width: 900px;
+            max-width: 100%;
+            height: 600px; /* Fixed height for TV */
+            background: repeating-linear-gradient(90deg, var(--wood-dark) 0px, var(--wood-dark) 2px, var(--wood-light) 4px, var(--wood-dark) 6px);
+            border-radius: 20px;
+            box-shadow: 
+                inset 0 0 40px rgba(0,0,0,0.8),
+                0 20px 50px rgba(0,0,0,0.5),
+                0 0 0 10px #251815;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+            transform: rotateX(2deg); /* Slight 3D tilt */
+        }
+
+        .screen-bezel {
+            background: #000;
+            border-radius: 30px;
+            padding: 15px;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #333;
+        }
+
+        .crt-screen {
+            width: 100%; height: 100%;
+            background-color: var(--accent-dim);
+            border-radius: 80px / 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 80px rgba(0,0,0,0.7);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            padding: 2rem;
+            color: var(--accent-glow);
+            font-family: var(--font-tech);
+        }
+
+        .crt-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 20;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), radial-gradient(circle at center, transparent 60%, black 100%);
+            background-size: 100% 4px, 100% 100%;
+            animation: flicker 0.15s infinite;
+        }
+
+        .controls-panel {
+            background: linear-gradient(to right, #2a2a2a, #1a1a1a);
+            border-radius: 10px; border: 2px solid #000;
+            padding: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* TV Internal Elements */
+        .knob-container { position: relative; width: 80px; height: 80px; margin-bottom: 20px; }
+        .knob {
+            width: 100%; height: 100%; background: radial-gradient(#444, #111);
+            border-radius: 50%; border: 4px solid #000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .knob::after { content: ''; position: absolute; top: 10px; left: 50%; width: 6px; height: 20px; background: #fff; transform: translateX(-50%); }
+        
+        .speaker { width: 100%; height: 100px; background: repeating-linear-gradient(black, black 2px, transparent 2px, transparent 4px); border: 1px solid #000; border-radius: 4px; opacity: 0.7;}
+
+        .button-group { display: flex; gap: 10px; width: 100%; justify-content: center; margin-top: 10px; }
+        .rect-btn {
+            width: 40px; height: 25px; background: #333; border: none; border-bottom: 4px solid #111;
+            border-radius: 4px; cursor: pointer; color: #ccc; font-weight: bold; font-size: 10px;
+        }
+        .rect-btn:active { border-bottom: 0px; transform: translateY(4px); }
+
+        .power-btn {
+            width: 50px; height: 50px; background: #a00; border-radius: 50%; border: 4px solid #500;
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.3); cursor: pointer;
+        }
+        .power-btn.on { background: #f00; box-shadow: 0 0 15px #f00; }
+
+        /* Screen Content Styling */
+        .tv-project-title { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 0.5rem; line-height: 1; }
+        .tv-project-desc { font-size: 1.2rem; margin-bottom: 1.5rem; max-width: 90%; color: #ccffcc; }
+        .tv-tech-stack { font-size: 1rem; color: #88cc88; margin-bottom: 1.5rem; border: 1px dashed #88cc88; padding: 5px; display: inline-block;}
+        .channel-indicator { position: absolute; top: 20px; right: 30px; font-size: 1.5rem; border: 1px solid var(--accent-glow); padding: 2px 8px; }
+
+        /* Animations */
+        @keyframes flicker { 0% { opacity: 0.9; } 5% { opacity: 0.8; } 100% { opacity: 0.9; } }
+        
+        /* STATIC NOISE & CURSOR EFFECTS */
+        .static-noise {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background-image: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%);
+            background-size: 200% 200%;
+            animation: noise 0.2s infinite; 
+            opacity: 0; 
+            pointer-events: none; 
+            z-index: 15;
+            
+            /* Cursor Spotlight Mask (Default) */
+            --x: 50%;
+            --y: 50%;
+            -webkit-mask-image: radial-gradient(circle at var(--x) var(--y), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 150px);
+            mask-image: radial-gradient(circle at var(--x) var(--y), black 0%, transparent 150px);
+            transition: opacity 0.1s;
+        }
+
+        /* Show local static on hover */
+        .crt-screen:hover .static-noise {
+            opacity: 0.3;
+        }
+
+        /* Full screen static for channel switching (Overrides mask) */
+        .static-noise.full-static {
+            -webkit-mask-image: none;
+            mask-image: none;
+            opacity: 0.8 !important;
+        }
+
+        @keyframes noise { 0% { background-position: 0 0; } 100% { background-position: 100% 100%; } }
+
+        .crt-off { background: #000; animation: turnOff 0.6s forwards; }
+        .crt-on { animation: turnOn 1.5s forwards; }
+        
+        @keyframes turnOff {
+            0% { transform: scale(1, 1); filter: brightness(1); background: #fff; }
+            50% { transform: scale(1, 0.005); filter: brightness(5); background: #fff; }
+            100% { transform: scale(0, 0); background: #000; }
+        }
+        @keyframes turnOn {
+            0% { transform: scale(0,0); filter: brightness(5); background: #fff; }
+            60% { transform: scale(1, 0.005); filter: brightness(2); background: #fff; }
+            100% { transform: scale(1, 1); background: var(--accent-dim); }
+        }
+
+        /* --- 8. PLAYGROUND (VHS SHELF) --- */
+        .shelf-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 40px 20px 20px;
+            background: #2a2018; /* Wood Shelf */
+            border-bottom: 20px solid #1a1008; /* Shelf Edge */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        /* Top Shadow of shelf */
+        .shelf-container::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height: 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+            pointer-events: none;
+        }
+
+        .vhs-tape {
+            width: 60px;
+            height: 250px;
+            background: #111;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, margin 0.3s;
+            box-shadow: 5px 0 10px rgba(0,0,0,0.5);
+            /* Spine texture */
+            background-image: linear-gradient(90deg, #222 0%, #111 20%, #111 80%, #000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* The Label on the Spine */
+        .vhs-label {
+            background: #eee;
+            color: #111;
+            padding: 5px 15px;
+            font-family: var(--font-marker);
+            transform: rotate(-90deg);
+            white-space: nowrap;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            font-size: 1.1rem;
+        }
+
+        /* Tape Hover Effect */
+        .vhs-tape:hover {
+            transform: translateY(-40px) scale(1.05);
+            z-index: 10;
+            margin: 0 20px; /* Push neighbors away slightly */
+        }
+
+        /* Tape Info Box (Revealed on Hover) */
+        .vhs-info {
+            position: absolute;
+            bottom: -160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            background: #fff;
+            color: #111;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            text-align: center;
+            font-family: var(--font-paper);
+            z-index: 20;
+        }
+        
+        .vhs-tape:hover .vhs-info {
+            opacity: 1;
+            bottom: -140px;
+            pointer-events: auto;
+        }
+
+        .vhs-info h4 { color: #000; font-size: 1.2rem; margin-bottom: 5px; text-shadow: none; }
+        .vhs-info p { font-size: 0.9rem; margin-bottom: 10px; line-height: 1.3; }
+        
+        .vhs-links { display: flex; gap: 5px; justify-content: center; }
+        .vhs-btn {
+            font-size: 0.8rem; padding: 3px 8px; border: 1px solid #333;
+            text-decoration: none; text-transform: uppercase; font-weight: bold;
+            transition: 0.2s;
+        }
+        .vhs-btn:hover { background: #000; color: #fff; }
+
+        /* Varying Tape Colors */
+        .vhs-tape:nth-child(2n) .vhs-label { background: #ffcc00; }
+        .vhs-tape:nth-child(3n) .vhs-label { background: #ff9999; }
+        
+        /* --- 9. CONTACT / FOOTER --- */
+        .contact-section { text-align: center; }
+        .contact-form {
+            max-width: 600px; margin: 2rem auto; text-align: left;
+            font-family: var(--font-tech);
+        }
+        .form-group { margin-bottom: 1rem; }
+        .form-input {
+            width: 100%; padding: 10px; background: #111; border: 1px solid #444; color: var(--accent-glow);
+            font-family: var(--font-tech); font-size: 1.1rem;
+        }
+        .form-input:focus { outline: none; border-color: var(--accent-glow); }
+
+        footer {
+            text-align: center; padding: 2rem; background: #000; color: #555; font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .tv-set { grid-template-columns: 1fr; height: auto; padding: 15px; }
+            .controls-panel { flex-direction: row; height: auto; margin-top: 1rem; }
+            .speaker, .brand-badge { display: none; }
+            .about-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            .knob-container { width: 50px; height: 50px; }
+            .rack-unit { flex-direction: column; align-items: flex-start; }
+            .rack-bolts { display: none; }
+            .rack-status { margin: 10px 0 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">ANALOG<span>.DEV</span></div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#projects">Work</a>
+                <a href="#playground">Lab</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="status-badge">SYSTEM STATUS: ONLINE</div>
+            <h1>CREATIVE CODING <br> FROM THE PAST FUTURE.</h1>
+            <p>I build immersive web experiences using modern tech with a vintage soul.</p>
+            <a href="#projects" class="btn">INITIALIZE PROTOCOL</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="container">
+        <div class="about-grid">
+            <div class="polaroid">
+                <!-- Placeholder for profile image -->
+                <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?q=80&w=1000&auto=format&fit=crop" alt="Profile">
+                <div class="polaroid-caption">Operator_01.jpg</div>
+            </div>
+            <div>
+                <h2>// THE OPERATOR</h2>
+                <p style="margin-bottom: 1.5rem;">
+                    My name is [Your Name]. I am a Full Stack Developer who loves the aesthetic of the early internet and 80s hardware.
+                </p>
+                <p style="margin-bottom: 2rem;">
+                    While this site looks old, the code is brand new. I specialize in React, Node.js, and WebGL interactions.
+                </p>
+                
+                <div class="skills-container">
+                    <div class="skill-bar"><span>JAVASCRIPT</span><span>[||||||||||] 90%</span></div>
+                    <div class="skill-bar"><span>REACT/NEXT</span><span>[||||||||..] 80%</span></div>
+                    <div class="skill-bar"><span>BACKEND_OPS</span><span>[||||||....] 60%</span></div>
+                    <div class="skill-bar"><span>UI_DESIGN</span><span>[||||||||||] 95%</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (Tech Stack / Server Rack) -->
+    <section id="services">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">// SYSTEM_SPECIFICATIONS</h2>
+            
+            <div class="rack-container">
+                <!-- Unit 1 -->
+                <div class="rack-unit">
+                    <div class="rack-bolts">
+                        <div class="bolt"></div>
+                        <div class="bolt"></div>
+                    </div>
+                    <div class="rack-content">
+                        <div class="rack-title">FRONTEND_MODULE</div>
+                        <div class="rack-details">
+                            <span>React</span> <span>Next.js</span> <span>Tailwind</span> <span>WebGL</span>
+                        </div>
+                    </div>
+                    <div class="rack-status">
+                        <div class="led green"></div>
+                        <div class="led green"></div>
+                        <div class="led yellow"></div>
+                    </div>
+                </div>
+                
+                <!-- Unit 2 -->
+                <div class="rack-unit">
+                    <div class="rack-bolts">
+                        <div class="bolt"></div>
+                        <div class="bolt"></div>
+                    </div>
+                    <div class="rack-content">
+                        <div class="rack-title">BACKEND_CORE</div>
+                        <div class="rack-details">
+                            <span>Node.js</span> <span>Python</span> <span>PostgreSQL</span> <span>Redis</span>
+                        </div>
+                    </div>
+                    <div class="rack-status">
+                        <div class="led green"></div>
+                        <div class="led red"></div> <!-- Maybe one service is busy! -->
+                    </div>
+                </div>
+
+                <!-- Unit 3 -->
+                <div class="rack-unit">
+                    <div class="rack-bolts">
+                        <div class="bolt"></div>
+                        <div class="bolt"></div>
+                    </div>
+                    <div class="rack-content">
+                        <div class="rack-title">DEVOPS_UNIT</div>
+                        <div class="rack-details">
+                            <span>Docker</span> <span>AWS</span> <span>CI/CD Pipelines</span>
+                        </div>
+                    </div>
+                    <div class="rack-status">
+                        <div class="led green"></div>
+                        <div class="led green"></div>
+                    </div>
+                </div>
+
+                 <!-- Unit 4 -->
+                 <div class="rack-unit">
+                    <div class="rack-bolts">
+                        <div class="bolt"></div>
+                        <div class="bolt"></div>
+                    </div>
+                    <div class="rack-content">
+                        <div class="rack-title">DESIGN_MATRIX</div>
+                        <div class="rack-details">
+                            <span>Figma</span> <span>Photoshop</span> <span>Blender 3D</span>
+                        </div>
+                    </div>
+                    <div class="rack-status">
+                        <div class="led yellow"></div>
+                        <div class="led yellow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section (THE TV) -->
+    <section id="projects">
+        <div class="container" style="text-align: center;">
+            <h2 style="margin-bottom: 1rem;">// BROADCASTING PROJECTS</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.7; font-family: var(--font-tech);">USE THE TV CONTROLS TO CHANGE CHANNELS</p>
+            
+            <div class="tv-wrapper">
+                <div class="tv-set">
+                    <!-- SCREEN -->
+                    <div class="screen-bezel">
+                        <div class="crt-screen crt-on" id="screen">
+                            <div class="crt-overlay"></div>
+                            <div class="static-noise" id="static"></div>
+                            <div class="channel-indicator" id="channel-num">CH 01</div>
+                            
+                            <div class="screen-content" id="content-area">
+                                <!-- JS Injects content here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTROLS -->
+                    <div class="controls-panel">
+                        <div style="font-family:'Special Elite'; font-size:0.9rem; color:#aaa; border:1px solid #555; padding:2px;">ZENITH</div>
+                        
+                        <div class="knob-container">
+                            <div class="knob" id="channel-knob" onclick="nextChannel()"></div>
+                        </div>
+
+                        <div class="speaker"></div>
+
+                        <div class="button-group">
+                            <button class="rect-btn" onclick="prevChannel()"> < </button>
+                            <button class="rect-btn" onclick="nextChannel()"> > </button>
+                        </div>
+
+                        <div style="text-align: center; margin-top: auto;">
+                            <button class="power-btn on" id="power-btn" onclick="togglePower()"></button>
+                            <div style="font-family:'Special Elite'; font-size:0.7rem; color:#666; margin-top:5px;">POWER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLAYGROUND (VHS Archive) -->
+    <section id="playground" style="overflow: visible;">
+        <div class="container" style="text-align: center;">
+            <h2 style="margin-bottom: 1rem;">// THE_ARCHIVES (LAB)</h2>
+            <p style="margin-bottom: 3rem; font-family: var(--font-tech);">SMALL EXPERIMENTS & PROTOTYPES STORED ON TAPE.</p>
+
+            <div class="shelf-container">
+                <!-- Tape 1 -->
+                <div class="vhs-tape">
+                    <div class="vhs-label">CSS ARTWORK</div>
+                    <div class="vhs-info">
+                        <h4>Pure CSS Portrait</h4>
+                        <p>A drawing made entirely of divs and border-radius.</p>
+                        <div class="vhs-links">
+                            <a href="#" class="vhs-btn">Code</a>
+                            <a href="#" class="vhs-btn">Demo</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tape 2 -->
+                <div class="vhs-tape">
+                    <div class="vhs-label">THREE.JS CUBE</div>
+                    <div class="vhs-info">
+                        <h4>3D Cube Spin</h4>
+                        <p>First attempt at WebGL lighting and materials.</p>
+                        <div class="vhs-links">
+                            <a href="#" class="vhs-btn">Code</a>
+                            <a href="#" class="vhs-btn">Demo</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tape 3 -->
+                <div class="vhs-tape">
+                    <div class="vhs-label">REACT HOOKS</div>
+                    <div class="vhs-info">
+                        <h4>Custom Hooks Lib</h4>
+                        <p>A collection of useful hooks for fetching data.</p>
+                        <div class="vhs-links">
+                            <a href="#" class="vhs-btn">Code</a>
+                            <a href="#" class="vhs-btn">NPM</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tape 4 -->
+                <div class="vhs-tape">
+                    <div class="vhs-label">GAME JAM 23</div>
+                    <div class="vhs-info">
+                        <h4>Space Dodge</h4>
+                        <p>48hr game jam entry using Kaboom.js.</p>
+                        <div class="vhs-links">
+                            <a href="#" class="vhs-btn">Code</a>
+                            <a href="#" class="vhs-btn">Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Tape 5 -->
+                 <div class="vhs-tape">
+                    <div class="vhs-label">API SCRAPER</div>
+                    <div class="vhs-info">
+                        <h4>News Bot</h4>
+                        <p>Python script that aggregates headlines.</p>
+                        <div class="vhs-links">
+                            <a href="#" class="vhs-btn">Repo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>// TRANSMIT SIGNAL</h2>
+            <p>Ready to start a project? Send a message via the terminal below.</p>
+            
+            <div class="contact-form">
+                <div class="form-group">
+                    <label>IDENTIFIER_NAME</label>
+                    <input type="text" class="form-input" placeholder="_">
+                </div>
+                <div class="form-group">
+                    <label>EMAIL_ADDRESS</label>
+                    <input type="email" class="form-input" placeholder="_">
+                </div>
+                <div class="form-group">
+                    <label>MESSAGE_PAYLOAD</label>
+                    <textarea class="form-input" rows="4" placeholder="_"></textarea>
+                </div>
+                <button class="btn" style="width: 100%;">SEND TRANSMISSION</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 THE ANALOG PORTFOLIO. ALL SYSTEMS NOMINAL.</p>
+    </footer>
+
+    <script>
+        // --- TV LOGIC ---
+        
+        // 1. Projects Data (Only Projects now)
+        const projects = [
+            {
+                title: "NEON_RIDER",
+                desc: "An endless runner game featuring procedural generation and synthwave aesthetics.",
+                tech: "[JS] [CANVAS] [AUDIO API]",
+                link: "#"
+            },
+            {
+                title: "CRYPTO_DASH",
+                desc: "Real-time market tracking dashboard using websockets and chart libraries.",
+                tech: "[REACT] [NODE] [WEBSOCKETS]",
+                link: "#"
+            },
+            {
+                title: "ARCHIVE_BOT",
+                desc: "A Discord bot that archives conversations to a notion database automatically.",
+                tech: "[PYTHON] [DISCORD.PY] [API]",
+                link: "#"
+            }
+        ];
+
+        let currentChannel = 0;
+        let isPowerOn = true;
+        let knobRotation = 0;
+
+        // Elements
+        const screen = document.getElementById('screen');
+        const contentArea = document.getElementById('content-area');
+        const channelNum = document.getElementById('channel-num');
+        const staticNoise = document.getElementById('static');
+        const knob = document.getElementById('channel-knob');
+        const powerBtn = document.getElementById('power-btn');
+
+        // Initial Render
+        renderProject();
+
+        // --- STATIC CURSOR INTERFERENCE ---
+        // Updates the mask position based on mouse coordinates relative to screen
+        screen.addEventListener('mousemove', (e) => {
+            if(!isPowerOn) return;
+            
+            const rect = screen.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            staticNoise.style.setProperty('--x', `${x}px`);
+            staticNoise.style.setProperty('--y', `${y}px`);
+        });
+
+        function renderProject() {
+            if(!isPowerOn) return;
+            
+            const p = projects[currentChannel];
+            contentArea.innerHTML = `
+                <div class="tv-project-title">${p.title}</div>
+                <div class="tv-tech-stack">${p.tech}</div>
+                <p class="tv-project-desc">${p.desc}</p>
+                <a href="${p.link}" class="btn" style="font-size: 1rem; padding: 5px 15px;">EXECUTE</a>
+            `;
+            channelNum.innerText = `CH 0${currentChannel + 1}`;
+        }
+
+        function switchChannelEffect() {
+            if(!isPowerOn) return;
+
+            // Enable Full Static Mode (overrides cursor mask)
+            staticNoise.classList.add('full-static');
+            contentArea.style.opacity = '0';
+
+            // Swap Content
+            setTimeout(() => {
+                renderProject();
+            }, 300);
+
+            // Remove Static
+            setTimeout(() => {
+                staticNoise.classList.remove('full-static');
+                contentArea.style.opacity = '1';
+            }, 600);
+        }
+
+        function nextChannel() {
+            if(!isPowerOn) return;
+            currentChannel = (currentChannel + 1) % projects.length;
+            knobRotation += 45;
+            knob.style.transform = `rotate(${knobRotation}deg)`;
+            switchChannelEffect();
+        }
+
+        function prevChannel() {
+            if(!isPowerOn) return;
+            currentChannel = (currentChannel - 1 + projects.length) % projects.length;
+            knobRotation -= 45;
+            knob.style.transform = `rotate(${knobRotation}deg)`;
+            switchChannelEffect();
+        }
+
+        function togglePower() {
+            isPowerOn = !isPowerOn;
+            if (isPowerOn) {
+                screen.classList.remove('crt-off');
+                screen.classList.add('crt-on');
+                powerBtn.classList.add('on');
+                setTimeout(() => renderProject(), 1200);
+            } else {
+                screen.classList.remove('crt-on');
+                screen.classList.add('crt-off');
+                powerBtn.classList.remove('on');
+            }
+        }
+    </script>
+</body>
+</html>
