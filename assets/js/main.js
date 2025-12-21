@@ -165,10 +165,10 @@ function initThemeToggle() {
 function initContactForm() {
     // --- LOCAL DEVELOPMENT OVERRIDE ---
     
-    // uncomment the block below and enter your IDs manually. 
+    // uncomment  
     /*
     window.env = {
-        PUBLIC_KEY: "AVyB_eDwsaTLnryjR",
+        PUBLIC_KEY: "",
         SERVICE_ID: "your_local_service_id",
         TEMPLATE_ID: "your_local_template_id"
     };
@@ -199,7 +199,7 @@ function initContactForm() {
             return;
         }
 
-        // VISUAL FEEDBACK: Start Transmitting
+        //Start Transmitting
         if (btn) {
             btn.innerText = "TRANSMITTING...";
             btn.disabled = true;
@@ -285,20 +285,19 @@ function initSocialPanel() {
 
 function initScrollReveal() {
     const observerOptions = {
-        threshold: 0.1 // Trigger when 10% of the section is visible
+        threshold: 0.1 
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                // Optional: Stop observing once revealed
+                
                 observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Apply to all major sections
     document.querySelectorAll('section, .tv-set, .shelf-container').forEach(el => {
         el.classList.add('reveal');
         observer.observe(el);

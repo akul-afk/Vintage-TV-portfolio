@@ -111,15 +111,6 @@ const themes = {
 };
 
 // 5. Skill Specifications
-const skills = [
-    { label: "JAVASCRIPT", value: 90 },
-    { label: "REACT/NEXT", value: 85 },
-    { label: "BACKEND_OPS", value: 70 },
-    { label: "UI_DESIGN", value: 95 },
-    { label: "PYTHON/NLP", value: 75 } // Added your interest in NLP here
-];
-
-
 
 const techStack = [
     {

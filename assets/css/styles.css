@@ -12,7 +12,7 @@
 ::-webkit-scrollbar-thumb {
     background: #222;
     border: 2px solid var(--bg-wall);
-    border-radius: 0px; /* Sharp industrial edges */
+    border-radius: 0px;
     box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
@@ -109,11 +109,11 @@ h1, h2, h3 { color: var(--accent-glow); text-shadow: 0 0 5px rgba(168, 255, 171,
 }
 
 /* --- 3. NAVIGATION --- */
-/* --- 3. NAVIGATION (FIXED & ENHANCED) --- */
+
 nav {
     position: sticky;
     top: 0;
-    /* Uses variable for theme compatibility */
+    
     background: rgba(var(--bg-rgb, 26, 21, 16), 0.95); 
     border-bottom: 1px solid #333;
     z-index: 1000;
@@ -132,7 +132,7 @@ nav {
 .nav-links { 
     display: flex; 
     gap: 2rem; 
-    align-items: center; /* Ensures everything stays on one line */
+    align-items: center; 
 }
 
 .nav-links a { 
@@ -556,7 +556,7 @@ footer {
 .social-panel {
     position: fixed;
     bottom: 100px;
-    right: -400px; /* Hidden by default */
+    right: -400px; 
     width: 300px;
     background: rgba(10, 10, 10, 0.95);
     border: 2px solid var(--accent-glow);
@@ -614,9 +614,9 @@ footer {
 }
 
 .console-btn {
-    background: #1a1a1a; /* Dark industrial plastic look */
+    background: #1a1a1a; 
     border: 2px solid #333;
-    border-bottom: 4px solid #000; /* Depth effect */
+    border-bottom: 4px solid #000; 
     color: var(--accent-glow);
     padding: 5px 15px;
     font-family: var(--font-tech);
@@ -639,19 +639,17 @@ footer {
 
 .console-btn i {
     font-size: 0.7rem;
-    /* Red light indicator for power */
+    
     color: #ff3333; 
     text-shadow: 0 0 5px #ff3333;
 }
 
-/* Hidden state */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease-out;
 }
 
-/* Active state (Triggered by JS) */
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
@@ -664,19 +662,15 @@ footer {
     40% { opacity: 0.3; }
     100% { opacity: 1; }
 }
-/* assets/css/styles.css */
 
-/* Staggered blink for green LEDs (Processing) */
 .led.green {
     animation: blink 2s infinite;
 }
 
-/* Fast blink for yellow LEDs (Data Transfer) */
 .led.yellow {
     animation: blink 0.8s infinite;
 }
 
-/* Solid pulse for red LEDs (System Alert/Standby) */
 .led.red {
     animation: pulse 3s infinite;
 }
