@@ -20,7 +20,6 @@ const prevBtn = document.getElementById('prev-channel');
 function renderProject() {
     if (!isPowerOn) return;
 
-    // 'projects' is globally available from data.js
     const p = projects[currentChannel];
     contentArea.innerHTML = `
         <div class="tv-project-title">${p.title}</div>
@@ -100,6 +99,66 @@ function togglePower() {
         powerBtn.classList.remove('on');
     }
 }
+function renderSocials() {
+    const list = document.getElementById('social-list');
+    if (!list) return;
+
+    list.innerHTML = socials.map(s => `
+        <a href="${s.url}" target="_blank" class="social-link" style="--hover-color: ${s.color}">
+            <i class="${s.icon}"></i>
+            <span>${s.platform}</span>
+        </a>
+    `).join('');
+}
+
+function renderTechStack() {
+    const rack = document.getElementById('tech-rack');
+    if (!rack) return;
+
+    rack.innerHTML = techStack.map(item => `
+        <div class="rack-unit">
+            <div class="rack-bolts">
+                <div class="bolt"></div>
+                <div class="bolt"></div>
+            </div>
+            <div class="rack-content">
+                <div class="rack-title">${item.id}</div>
+                <div class="rack-details">
+                    ${item.techs.map(t => `<span>${t}</span>`).join(' ')}
+                </div>
+            </div>
+            <div class="rack-status">
+                ${item.leds.map(color => `<div class="led ${color}"></div>`).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function initThemeToggle() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (!toggleBtn) return;
+
+    let currentTheme = localStorage.getItem('analog-theme') || 'phosphor';
+
+    // Function to apply colors from data.js
+    const applyTheme = (themeKey) => {
+        const theme = themes[themeKey];
+        Object.keys(theme.colors).forEach(property => {
+            document.documentElement.style.setProperty(property, theme.colors[property]);
+        });
+        toggleBtn.innerText = `// MODE: ${theme.label}`;
+        localStorage.setItem('analog-theme', themeKey);
+    };
+
+    // Initial Apply
+    applyTheme(currentTheme);
+
+    toggleBtn.addEventListener('click', () => {
+        currentTheme = currentTheme === 'phosphor' ? 'amber' : 'phosphor';
+        applyTheme(currentTheme);
+    });
+}
+
 
 // 4. Contact Form Logic
 
@@ -109,7 +168,7 @@ function initContactForm() {
     // uncomment the block below and enter your IDs manually. 
     /*
     window.env = {
-        PUBLIC_KEY: "your_local_public_key",
+        PUBLIC_KEY: "AVyB_eDwsaTLnryjR",
         SERVICE_ID: "your_local_service_id",
         TEMPLATE_ID: "your_local_template_id"
     };
@@ -198,9 +257,62 @@ if (screen) {
     });
 }
 
+function initSocialPanel() {
+    const panel = document.getElementById('social-panel');
+    const openBtn = document.getElementById('open-socials');
+    if (!panel || !openBtn) return;
+    openBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        panel.classList.toggle('active');
+    });
+
+    
+    document.addEventListener('click', (e) => {
+        if (panel.classList.contains('active') && 
+            !panel.contains(e.target) && 
+            !openBtn.contains(e.target)) {
+            panel.classList.remove('active');
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && panel.classList.contains('active')) {
+            panel.classList.remove('active');
+        }
+    });
+}
+
 // 6. Bootstrap Application
+
+function initScrollReveal() {
+    const observerOptions = {
+        threshold: 0.1 // Trigger when 10% of the section is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                // Optional: Stop observing once revealed
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Apply to all major sections
+    document.querySelectorAll('section, .tv-set, .shelf-container').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+
 window.addEventListener('DOMContentLoaded', () => {
+    renderTechStack();
     renderProject();
     renderArchives();
+    renderSocials(); 
+    initSocialPanel();
     initContactForm(); 
+    initThemeToggle();
+    initScrollReveal();
 });

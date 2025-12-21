@@ -59,3 +59,82 @@ const archives = [
         links: [{ name: "Repo", url: "#" }]
     }
 ];
+
+// 3. Social Media Uplinks
+const socials = [
+    {
+        platform: "GITHUB",
+        icon: "fa-brands fa-github",
+        url: "https://github.com/yourusername",
+        color: "#f0f6fc" // Off-white
+    },
+    {
+        platform: "LINKEDIN",
+        icon: "fa-brands fa-linkedin",
+        url: "https://linkedin.com/in/yourusername",
+        color: "#0077b5" // LinkedIn Blue
+    },
+    {
+        platform: "TWITTER",
+        icon: "fa-brands fa-x-twitter",
+        url: "https://twitter.com/yourusername",
+        color: "#1DA1F2"
+    }
+];
+
+// 4. Theme Configurations
+const themes = {
+    phosphor: {
+        label: "PHOSPHOR_GREEN",
+        colors: {
+            "--bg-wall": "#0a0a0a",
+            "--text-main": "#00ff41",
+            "--accent-glow": "#00ff41",
+            "--nav-text": "#fff",
+            "--form-bg": "#111",
+            "--uplink-glow": "0 0 10px var(--accent-glow)",
+            "--crt-opacity": "0.1"
+        }
+    },
+    amber: {
+        label: "VINTAGE_AMBER",
+        colors: {
+            "--bg-wall": "#1a1510",
+            "--text-main": "#ffb000",
+            "--accent-glow": "#ffb000",
+            "--nav-text": "#fff",
+            "--form-bg": "#111",
+            "--uplink-glow": "0 0 10px var(--accent-glow)",
+            "--crt-opacity": "0.15"
+        }
+    }
+};
+
+// 5. Skill Specifications
+const skills = [
+    { label: "JAVASCRIPT", value: 90 },
+    { label: "REACT/NEXT", value: 85 },
+    { label: "BACKEND_OPS", value: 70 },
+    { label: "UI_DESIGN", value: 95 },
+    { label: "PYTHON/NLP", value: 75 } // Added your interest in NLP here
+];
+
+
+
+const techStack = [
+    {
+        id: "FRONTEND_MODULE",
+        techs: ["React", "Next.js", "Tailwind", "WebGL"],
+        leds: ["green", "green", "yellow"]
+    },
+    {
+        id: "BACKEND_CORE",
+        techs: ["Node.js", "Python", "PostgreSQL", "Redis"],
+        leds: ["green", "red"]
+    },
+    {
+        id: "DEVOPS_UNIT",
+        techs: ["Docker", "AWS", "CI/CD"],
+        leds: ["green", "green"]
+    }
+];

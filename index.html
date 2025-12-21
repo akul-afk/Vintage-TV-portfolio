@@ -23,8 +23,29 @@
                 <a href="#projects">Work</a>
                 <a href="#playground">Lab</a>
                 <a href="#contact">Contact</a>
+            
+            </div>
+            <nav>
+    <div class="container nav-inner">
+
+        
+        <div class="theme-console">
+            <span class="console-label">MONITOR_MODE</span>
+            <div class="console-buttons">
+                <button class="console-btn" id="theme-toggle" title="Cycle Display Mode">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span id="theme-label">PHOSPHOR</span>
+                </button>
             </div>
         </div>
+
+        <div class="nav-links">
+            </div>
+    </div>
+</nav>
+            
+        </div>
+        
     </nav>
 
     <section class="hero">
@@ -64,35 +85,11 @@
     <section id="services">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: 2rem;">// SYSTEM_SPECIFICATIONS</h2>
-            <div class="rack-container">
-                <div class="rack-unit">
-                    <div class="rack-bolts"><div class="bolt"></div><div class="bolt"></div></div>
-                    <div class="rack-content">
-                        <div class="rack-title">FRONTEND_MODULE</div>
-                        <div class="rack-details"><span>React</span> <span>Next.js</span> <span>Tailwind</span> <span>WebGL</span></div>
-                    </div>
-                    <div class="rack-status"><div class="led green"></div><div class="led green"></div><div class="led yellow"></div></div>
-                </div>
-                <div class="rack-unit">
-                    <div class="rack-bolts"><div class="bolt"></div><div class="bolt"></div></div>
-                    <div class="rack-content">
-                        <div class="rack-title">BACKEND_CORE</div>
-                        <div class="rack-details"><span>Node.js</span> <span>Python</span> <span>PostgreSQL</span> <span>Redis</span></div>
-                    </div>
-                    <div class="rack-status"><div class="led green"></div><div class="led red"></div></div>
-                </div>
-                <div class="rack-unit">
-                    <div class="rack-bolts"><div class="bolt"></div><div class="bolt"></div></div>
-                    <div class="rack-content">
-                        <div class="rack-title">DEVOPS_UNIT</div>
-                        <div class="rack-details"><span>Docker</span> <span>AWS</span> <span>CI/CD</span></div>
-                    </div>
-                    <div class="rack-status"><div class="led green"></div><div class="led green"></div></div>
-                </div>
+        <div class="rack-container" id="tech-rack">
             </div>
         </div>
     </section>
-
+    
     <section id="projects">
         <div class="container" style="text-align: center;">
             <h2 style="margin-bottom: 1rem;">// BROADCASTING PROJECTS</h2>
@@ -161,9 +158,21 @@
     <footer>
         <p>&copy; 2025 THE ANALOG PORTFOLIO. ALL SYSTEMS NOMINAL.</p>
     </footer>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-    
+                <div class="social-panel" id="social-panel">
+                <div class="social-header">
+                <span>// SOCIAL_UPLINK</span>
+            </div>
+                    <div id="social-list" class="social-list">
+                    </div>
+            </div>
+
+            <button class="social-toggle-btn" id="open-socials">
+            <i class="fa-solid fa-satellite-dish"></i>
+            <span>UPLINK</span>
+        </button>
+        
     <script src="assets/js/config.js"></script>
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
