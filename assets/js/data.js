@@ -65,21 +65,23 @@ const socials = [
     {
         platform: "GITHUB",
         icon: "fa-brands fa-github",
-        url: "https://github.com/yourusername",
-        color: "#f0f6fc" // Off-white
+        url: "https://github.com/akul-afk",
+        color: "#f0f6fc" 
     },
     {
         platform: "LINKEDIN",
         icon: "fa-brands fa-linkedin",
-        url: "https://linkedin.com/in/yourusername",
-        color: "#0077b5" // LinkedIn Blue
+        url: "https://www.linkedin.com/in/akul-afk/",
+        color: "#0077b5"
     },
     {
+        
         platform: "TWITTER",
-        icon: "fa-brands fa-x-twitter",
+        icon: "/assets/resource/twitter.webp",
         url: "https://twitter.com/yourusername",
         color: "#1DA1F2"
-    }
+    },
+    
 ];
 
 // 4. Theme Configurations

@@ -410,11 +410,15 @@ nav {
 }
 
 .crt-screen:hover .static-noise { opacity: 0.3; }
-.static-noise.full-static { -webkit-mask-image: none; mask-image: none; opacity: 0.8 !important; }
+.static-noise.full-static { 
+    -webkit-mask-image: none; 
+    mask-image: none; 
+    opacity: 0.8 !important; }
 
 @keyframes noise { 0% { background-position: 0 0; } 100% { background-position: 100% 100%; } }
 
-.crt-off { background: #000; animation: turnOff 0.6s forwards; }
+.crt-off { background: #000; 
+    animation: turnOff 0.6s forwards; }
 .crt-on { animation: turnOn 1.5s forwards; }
 
 @keyframes turnOff {
@@ -519,14 +523,14 @@ nav {
 .form-input {
     width: 100%; padding: 10px; background: #111; border: 1px solid #444; color: var(--accent-glow);
     font-family: var(--font-tech); font-size: 1.1rem;
+    resize: none;
+    overflow-y: auto;
 }
 
 footer {
     text-align: center; padding: 2rem; background: #000; color: #555; font-size: 0.9rem;
     border-top: 1px solid #333;
 }
-
-/* Responsive */
 @media (max-width: 800px) {
     .tv-set { grid-template-columns: 1fr; height: auto; padding: 15px; }
     .controls-panel { flex-direction: row; height: auto; margin-top: 1rem; }
@@ -535,7 +539,7 @@ footer {
     .hero h1 { font-size: 2.5rem; }
     .knob-container { width: 50px; height: 50px; }
 }
-/* Social Panel Styles */
+
 .social-toggle-btn {
     position: fixed;
     bottom: 30px;
@@ -594,8 +598,29 @@ footer {
     border-color: var(--accent-glow);
     background: rgba(0, 255, 65, 0.1);
     transform: translateX(10px);
+
 }
-/* --- THEME CONSOLE (NAV BUTTON) --- */
+/* Styles for Font Icons */
+.social-link i {
+    font-size: 1.2rem;
+    
+    filter: drop-shadow(0 0 2px var(--accent-glow));
+}
+
+.social-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 2px var(--accent-glow));
+}
+.social-link:hover i,
+.social-link:hover .social-icon-img {
+    color: var(--accent-glow);
+    filter: drop-shadow(0 0 8px var(--accent-glow)) brightness(1.2);
+    transform: scale(1.1);
+}
+/* --- THEME CONSOLE --- */
 .theme-console {
     display: flex;
     flex-direction: column;
@@ -630,7 +655,7 @@ footer {
     text-transform: uppercase;
 }
 
-/* Simulate physical button press */
+/* physical button press */
 .console-btn:active {
     transform: translateY(2px);
     border-bottom: 2px solid #000;

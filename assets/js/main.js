@@ -1,5 +1,4 @@
 
-
 // 1. State Management
 let currentChannel = 0;
 let isPowerOn = true;
@@ -102,13 +101,21 @@ function togglePower() {
 function renderSocials() {
     const list = document.getElementById('social-list');
     if (!list) return;
+    list.innerHTML = socials.map(s => {
+        
+        const isImage = s.icon.includes('/') || s.icon.includes('.');
+        
+        const iconHtml = isImage 
+            ? `<img src="${s.icon}" alt="${s.platform}" class="social-icon-img">`
+            : `<i class="${s.icon}"></i>`;
 
-    list.innerHTML = socials.map(s => `
-        <a href="${s.url}" target="_blank" class="social-link" style="--hover-color: ${s.color}">
-            <i class="${s.icon}"></i>
-            <span>${s.platform}</span>
-        </a>
-    `).join('');
+        return `
+            <a href="${s.url}" target="_blank" class="social-link" style="--hover-color: ${s.color}">
+                ${iconHtml}
+                <span>${s.platform}</span>
+            </a>
+        `;
+    }).join('');
 }
 
 function renderTechStack() {
@@ -133,14 +140,13 @@ function renderTechStack() {
         </div>
     `).join('');
 }
-
+// 4. Theme Toggle Logic
 function initThemeToggle() {
     const toggleBtn = document.getElementById('theme-toggle');
     if (!toggleBtn) return;
 
     let currentTheme = localStorage.getItem('analog-theme') || 'phosphor';
 
-    // Function to apply colors from data.js
     const applyTheme = (themeKey) => {
         const theme = themes[themeKey];
         Object.keys(theme.colors).forEach(property => {
@@ -149,8 +155,6 @@ function initThemeToggle() {
         toggleBtn.innerText = `// MODE: ${theme.label}`;
         localStorage.setItem('analog-theme', themeKey);
     };
-
-    // Initial Apply
     applyTheme(currentTheme);
 
     toggleBtn.addEventListener('click', () => {
@@ -164,16 +168,13 @@ function initThemeToggle() {
 
 function initContactForm() {
     // --- LOCAL DEVELOPMENT OVERRIDE ---
-    
-    // uncomment  
     /*
     window.env = {
         PUBLIC_KEY: "",
-        SERVICE_ID: "your_local_service_id",
-        TEMPLATE_ID: "your_local_template_id"
+        SERVICE_ID: "",
+        TEMPLATE_ID: ""
     };
     */
-
     const publicKey = window.env?.PUBLIC_KEY || ""; 
     const serviceID = window.env?.SERVICE_ID || "";
     const templateID = window.env?.TEMPLATE_ID || "";
@@ -198,8 +199,6 @@ function initContactForm() {
             if (status) status.innerText = "> ERROR: UNAUTHORIZED ACCESS.";
             return;
         }
-
-        //Start Transmitting
         if (btn) {
             btn.innerText = "TRANSMITTING...";
             btn.disabled = true;
@@ -208,8 +207,6 @@ function initContactForm() {
             status.style.color = "var(--accent-glow)";
             status.innerText = "> INITIALIZING UPLINK...";
         }
-
-        // TRANSMISSION
         emailjs.sendForm(serviceID, templateID, form)
             .then(() => {
                 if (btn) btn.innerText = "TRANSMISSION SUCCESS";
@@ -237,7 +234,6 @@ function initContactForm() {
             });
     });
 }
-
 // 5. Initialize Event Listeners
 if (nextBtn) nextBtn.addEventListener('click', nextChannel);
 if (prevBtn) prevBtn.addEventListener('click', prevChannel);
@@ -256,7 +252,7 @@ if (screen) {
         staticNoise.style.setProperty('--y', `${y}px`);
     });
 }
-
+// Social Panel Logic
 function initSocialPanel() {
     const panel = document.getElementById('social-panel');
     const openBtn = document.getElementById('open-socials');
@@ -265,8 +261,6 @@ function initSocialPanel() {
         e.stopPropagation();
         panel.classList.toggle('active');
     });
-
-    
     document.addEventListener('click', (e) => {
         if (panel.classList.contains('active') && 
             !panel.contains(e.target) && 
@@ -280,9 +274,7 @@ function initSocialPanel() {
         }
     });
 }
-
 // 6. Bootstrap Application
-
 function initScrollReveal() {
     const observerOptions = {
         threshold: 0.1 
@@ -303,8 +295,6 @@ function initScrollReveal() {
         observer.observe(el);
     });
 }
-
-
 window.addEventListener('DOMContentLoaded', () => {
     renderTechStack();
     renderProject();
