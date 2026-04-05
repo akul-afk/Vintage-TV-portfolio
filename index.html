@@ -7,53 +7,52 @@
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&family=VT323&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/parallax.css">
+    <link rel="stylesheet" href="assets/css/floating.css">
 </head>
 <body>
+
+    <!-- DYNAMIC BACKGROUND LAYERS -->
+    <div id="debris-field" class="debris-field"></div>
+    <div class="circuit-bg">
+        <object type="image/svg+xml" data="assets/images/circuit_traces.svg" class="circuit-svg"></object>
+    </div>
 
     <nav>
         <div class="container nav-inner">
             <div class="logo">ANALOG<span>.DEV</span></div>
+            
             <div class="nav-links">
                 <a href="#about">About</a>
                 <a href="#services">Services</a>
                 <a href="#projects">Work</a>
                 <a href="#playground">Lab</a>
                 <a href="#contact">Contact</a>
-            
             </div>
-            <nav>
-    <div class="container nav-inner">
 
-        
-        <div class="theme-console">
-            <span class="console-label">MONITOR_MODE</span>
-            <div class="console-buttons">
-                <button class="console-btn" id="theme-toggle" title="Cycle Display Mode">
-                    <i class="fa-solid fa-power-off"></i>
-                    <span id="theme-label">PHOSPHOR</span>
-                </button>
+            <div class="theme-console">
+                <span class="console-label">MONITOR_MODE</span>
+                <div class="console-buttons">
+                    <button class="console-btn" id="theme-toggle" title="Cycle Display Mode">
+                        <i class="fa-solid fa-power-off"></i>
+                        <span id="theme-label">PHOSPHOR</span>
+                    </button>
+                </div>
             </div>
-        </div>
-
-        <div class="nav-links">
-            </div>
-    </div>
-</nav>
             
         </div>
-        
     </nav>
 
-    <section class="hero">
+    <section class="hero" data-parallax data-speed="0.1">
         <div class="container">
-            <div class="status-badge">SYSTEM STATUS: ONLINE</div>
-            <h1>CREATIVE CODING <br> FROM THE PAST FUTURE.</h1>
-            <p>I build immersive web experiences using modern tech with a vintage soul.</p>
-            <a href="#projects" class="btn">INITIALIZE PROTOCOL</a>
+            <div class="status-badge" data-parallax data-speed="0.05">SYSTEM STATUS: ONLINE</div>
+            <h1 data-parallax data-speed="0.2">CREATIVE CODING <br> FROM THE PAST FUTURE.</h1>
+            <p data-parallax data-speed="0.15">I build immersive web experiences using modern tech with a vintage soul.</p>
+            <a href="#projects" class="btn" data-parallax data-speed="0.1">INITIALIZE PROTOCOL</a>
         </div>
     </section>
 
@@ -64,11 +63,11 @@
                 <div class="polaroid-caption">Operator_01.jpg</div>
             </div>
             <div>
-                <h2>// THE OPERATOR</h2>
-                <p style="margin-bottom: 1.5rem;">
+                <h2 class="scratch-reveal">// THE OPERATOR</h2>
+                <p class="mb-1-5">
                     My name is [Your Name]. I am a Full Stack Developer who loves the aesthetic of the early internet and 80s hardware.
                 </p>
-                <p style="margin-bottom: 2rem;">
+                <p class="mb-2">
                     While this site looks old, the code is brand new. I specialize in React, Node.js, and WebGL interactions.
                 </p>
                 
@@ -84,18 +83,18 @@
 
     <section id="services">
         <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem;">// SYSTEM_SPECIFICATIONS</h2>
-        <div class="rack-container" id="tech-rack">
+            <h2 class="text-center mb-2 scratch-reveal" data-parallax data-speed="0.1">// SYSTEM_SPECIFICATIONS</h2>
+        <div class="rack-container" id="tech-rack" data-parallax data-speed="0.05">
             </div>
         </div>
     </section>
 
     <section id="projects">
-        <div class="container" style="text-align: center;">
-            <h2 style="margin-bottom: 1rem;">// BROADCASTING PROJECTS</h2>
-            <p style="margin-bottom: 2rem; opacity: 0.7; font-family: var(--font-tech);">USE THE TV CONTROLS TO CHANGE CHANNELS</p>
-            <div class="tv-wrapper">
-                <div class="tv-set">
+        <div class="container text-center">
+            <h2 class="mb-1 scratch-reveal" data-parallax data-speed="0.1">// BROADCASTING PROJECTS</h2>
+            <p class="mb-2 opacity-70 font-tech">USE THE TV CONTROLS TO CHANGE CHANNELS</p>
+            <div class="tv-wrapper" data-parallax data-speed="0.08">
+                <div class="tv-set" data-parallax data-speed="0.15">
                     <div class="screen-bezel">
                         <div class="crt-screen crt-on" id="screen">
                             <div class="crt-overlay"></div>
@@ -105,7 +104,7 @@
                         </div>
                     </div>
                     <div class="controls-panel">
-                        <div style="font-family:'Special Elite'; font-size:0.9rem; color:#aaa; border:1px solid #555; padding:2px;">ZENITH</div>
+                        <div class="tv-brand">ZENITH</div>
                         <div class="knob-container">
                             <div class="knob" id="channel-knob"></div>
                         </div>
@@ -114,9 +113,9 @@
                             <button class="rect-btn" id="prev-channel"> < </button>
                             <button class="rect-btn" id="next-channel"> > </button>
                         </div>
-                        <div style="text-align: center; margin-top: auto;">
+                        <div class="text-center mt-auto">
                             <button class="power-btn on" id="power-btn"></button>
-                            <div style="font-family:'Special Elite'; font-size:0.7rem; color:#666; margin-top:5px;">POWER</div>
+                            <div class="tv-power-label">POWER</div>
                         </div>
                     </div>
                 </div>
@@ -124,54 +123,67 @@
         </div>
     </section>
 
-<section id="playground" style="overflow: visible;">
-    <div class="container" style="text-align: center;">
-        <h2 style="margin-bottom: 1rem;">// THE_ARCHIVES (LAB)</h2>
-        <p style="margin-bottom: 3rem; font-family: var(--font-tech);">SMALL EXPERIMENTS & PROTOTYPES STORED ON TAPE.</p>
+    <section id="playground" class="overflow-visible">
+        <div class="container text-center">
+            <h2 class="mb-1 scratch-reveal">// THE_ARCHIVES (LAB)</h2>
+            <p class="mb-3 font-tech">SMALL EXPERIMENTS & PROTOTYPES STORED ON TAPE.</p>
 
-        <div class="shelf-container" id="vhs-shelf"></div>
-    </div>
-</section>
+            <div class="shelf-container" id="vhs-shelf"></div>
+        </div>
+    </section>
 
-<section id="contact" class="contact-section">
-    <div class="container">
-        <h2>// TRANSMIT SIGNAL</h2>
-        <form class="contact-form" id="contact-form">
-            <div class="form-group">
-                <label>IDENTIFIER_NAME</label>
-                <input type="text" name="from_name" class="form-input" placeholder="_" required>
-            </div>
-            <div class="form-group">
-                <label>EMAIL_ADDRESS</label>
-                <input type="email" name="reply_to" class="form-input" placeholder="_" required>
-            </div>
-            <div class="form-group">
-                <label>MESSAGE_PAYLOAD</label>
-                <textarea name="message" class="form-input" rows="4" placeholder="_" required></textarea>
-            </div>
-            <button type="submit" class="btn" id="send-btn" style="width: 100%;">SEND TRANSMISSION</button>
-        </form>
-        
-        <div id="form-status" style="margin-top: 20px; font-family: var(--font-tech); min-height: 1.5rem;"></div>
-    </div>
-</section>
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="scratch-reveal">// TRANSMIT SIGNAL</h2>
+            <form class="contact-form" id="contact-form">
+                <!-- Honeypot Field (Invisible to humans) -->
+                <div class="hidden-field" aria-hidden="true">
+                    <input type="text" name="hp_full_name" tabindex="-1" autocomplete="off" placeholder="Your name here">
+                </div>
+
+                <div class="form-group">
+                    <label>IDENTIFIER_NAME</label>
+                    <input type="text" name="from_name" class="form-input" placeholder="_" required>
+                </div>
+                <div class="form-group">
+                    <label>EMAIL_ADDRESS</label>
+                    <input type="email" name="reply_to" class="form-input" placeholder="_" required>
+                </div>
+                <div class="form-group">
+                    <label>MESSAGE_PAYLOAD</label>
+                    <textarea name="message" class="form-input" rows="4" placeholder="_" required></textarea>
+                </div>
+
+                <!-- Retro Math Human Check -->
+                <div class="form-group">
+                    <label id="math-label">RETRO_AUTH_CHECK: [WAITING...]</label>
+                    <input type="number" id="math-answer" class="form-input" placeholder="0" required>
+                </div>
+
+                <button type="submit" class="btn w-100" id="send-btn">SEND TRANSMISSION</button>
+            </form>
+            
+            <div id="form-status" class="mt-20px font-tech min-h-1-5"></div>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2025 THE ANALOG PORTFOLIO. ALL SYSTEMS NOMINAL.</p>
     </footer>
-                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-                <div class="social-panel" id="social-panel">
-                <div class="social-header">
-                <span>// SOCIAL_UPLINK</span>
-            </div>
-                    <div id="social-list" class="social-list">
-                    </div>
-            </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-            <button class="social-toggle-btn" id="open-socials">
-            <i class="fa-solid fa-satellite-dish"></i>
-            <span>UPLINK</span>
-        </button>
+    <div class="social-panel" id="social-panel">
+        <div class="social-header">
+            <span>// SOCIAL_UPLINK</span>
+        </div>
+        <div id="social-list" class="social-list"></div>
+    </div>
+
+    <button class="social-toggle-btn" id="open-socials">
+        <i class="fa-solid fa-satellite-dish"></i>
+        <span>UPLINK</span>
+    </button>
         
     <script src="assets/js/config.js"></script>
     <script src="assets/js/data.js"></script>

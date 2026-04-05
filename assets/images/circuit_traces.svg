@@ -1,0 +1,29 @@
+<svg width="100%" height="100%" viewBox="0 0 1000 3000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .trace {
+      stroke: var(--accent-glow);
+      stroke-width: 0.5;
+      stroke-dasharray: 10, 50;
+      animation: trace-pulse 4s linear infinite;
+      opacity: 0.15;
+    }
+    @keyframes trace-pulse {
+      from { stroke-dashoffset: 200; }
+      to { stroke-dashoffset: 0; }
+    }
+  </style>
+  
+  <!-- Vertical Bus -->
+  <path class="trace" d="M100 0 V3000" />
+  <path class="trace" d="M900 0 V3000" style="animation-delay: -2s;"/>
+  
+  <!-- Lateral Connections -->
+  <path class="trace" d="M100 450 L200 500 H800 L900 550" />
+  <path class="trace" d="M900 1200 L800 1250 H200 L100 1300" style="animation-delay: -1s;"/>
+  <path class="trace" d="M100 2200 L400 2300 H600 L900 2400" />
+
+  <!-- Data Nodes -->
+  <circle cx="100" cy="450" r="2" fill="var(--accent-glow)" opacity="0.3"/>
+  <circle cx="900" cy="550" r="2" fill="var(--accent-glow)" opacity="0.3"/>
+  <circle cx="900" cy="1200" r="2" fill="var(--accent-glow)" opacity="0.3"/>
+</svg>

@@ -167,17 +167,23 @@ function initThemeToggle() {
 // 4. Contact Form Logic
 
 function initContactForm() {
-    // --- LOCAL DEVELOPMENT OVERRIDE ---
-    /*
-    window.env = {
-        PUBLIC_KEY: "",
-        SERVICE_ID: "",
-        TEMPLATE_ID: ""
-    };
-    */
     const publicKey = window.env?.PUBLIC_KEY || ""; 
     const serviceID = window.env?.SERVICE_ID || "";
     const templateID = window.env?.TEMPLATE_ID || "";
+
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('send-btn');
+    const status = document.getElementById('form-status');
+    const mathLabel = document.getElementById('math-label');
+    const mathInput = document.getElementById('math-answer');
+
+    if (!form) return;
+
+    // 1. Generate Retro Math Challenge
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const correctAnswer = num1 + num2;
+    if (mathLabel) mathLabel.innerText = `RETRO_AUTH_CHECK: ${num1} + ${num2} = ?`;
 
     if (!publicKey || !serviceID || !templateID) {
         console.warn("Signal Lost: EmailJS credentials missing. Form is in offline mode.");
@@ -186,19 +192,51 @@ function initContactForm() {
 
     emailjs.init(publicKey);
 
-    const form = document.getElementById('contact-form');
-    const btn = document.getElementById('send-btn');
-    const status = document.getElementById('form-status');
-    const honeypot = document.getElementById('honeypot');
-
-    if (!form) return;
-
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (honeypot && honeypot.value !== "") {
-            if (status) status.innerText = "> ERROR: UNAUTHORIZED ACCESS.";
+
+        // 2. Honeypot check
+        const hp = form.querySelector('input[name="hp_full_name"]');
+        if (hp && hp.value !== "") {
+            if (status) {
+                status.style.color = "var(--alert-red)";
+                status.innerText = "> ERROR: UNAUTHORIZED DATA INJECTION DETECTED.";
+            }
             return;
         }
+
+        // 3. Rate-limiting check (2 minute cooldown)
+        const lastSent = localStorage.getItem('contact_cooldown');
+        const now = Date.now();
+        if (lastSent && (now - lastSent < 120000)) {
+            if (status) {
+                status.style.color = "var(--alert-red)";
+                const wait = Math.ceil((120000 - (now - lastSent)) / 1000);
+                status.innerText = `> ERROR: FREQUENCY LIMIT EXCEEDED. RETRY IN ${wait}s.`;
+            }
+            return;
+        }
+
+        // 4. Math Check
+        if (parseInt(mathInput.value) !== correctAnswer) {
+            if (status) {
+                status.style.color = "var(--alert-red)";
+                status.innerText = "> ERROR: AUTHENTICATION FAILED. INCORRECT PAYLOAD SUM.";
+            }
+            return;
+        }
+
+        // 5. Basic Sanitization & Regex
+        const email = form.querySelector('input[name="reply_to"]').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            if (status) {
+                status.style.color = "var(--alert-red)";
+                status.innerText = "> ERROR: INVALID SIGNAL SOURCE (EMAIL).";
+            }
+            return;
+        }
+
         if (btn) {
             btn.innerText = "TRANSMITTING...";
             btn.disabled = true;
@@ -207,10 +245,15 @@ function initContactForm() {
             status.style.color = "var(--accent-glow)";
             status.innerText = "> INITIALIZING UPLINK...";
         }
+
         emailjs.sendForm(serviceID, templateID, form)
             .then(() => {
+                localStorage.setItem('contact_cooldown', Date.now());
                 if (btn) btn.innerText = "TRANSMISSION SUCCESS";
-                if (status) status.innerText = "> SIGNAL RECEIVED. ENCRYPTED RESPONSE PENDING.";
+                if (status) {
+                    status.style.color = "var(--accent-glow)";
+                    status.innerText = "> SIGNAL RECEIVED. ENCRYPTED RESPONSE PENDING.";
+                }
                 form.reset();
                 
                 setTimeout(() => { 
@@ -284,17 +327,157 @@ function initScrollReveal() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                
                 observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    document.querySelectorAll('section, .tv-set, .shelf-container').forEach(el => {
-        el.classList.add('reveal');
+    document.querySelectorAll('section, .reveal, .scratch-reveal').forEach(el => {
         observer.observe(el);
     });
 }
+
+/**
+ * PARALLAX ENGINE
+ * Uses requestAnimationFrame for 60fps performance
+ */
+function initParallax() {
+    const elements = document.querySelectorAll('[data-parallax]');
+    if (elements.length === 0) return;
+
+    let ticking = false;
+
+    function updateParallax() {
+        const scrolled = window.pageYOffset;
+        
+        elements.forEach(el => {
+            const speed = parseFloat(el.getAttribute('data-speed')) || 0.1;
+            const rect = el.getBoundingClientRect();
+            const elementTop = rect.top + scrolled;
+            
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                const shift = (scrolled - elementTop + window.innerHeight / 2) * speed;
+                el.style.transform = `translateY(${shift}px)`;
+                
+                if (el.classList.contains('tv-set')) {
+                    const rotateX = 2 + (shift * 0.05);
+                    el.style.transform = `translateY(${shift}px) rotateX(${rotateX}deg)`;
+                }
+            }
+        });
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    });
+
+    updateParallax();
+}
+
+function initDebrisField() {
+    const container = document.getElementById('debris-field');
+    if (!container) return;
+
+    // Fixed pathing and added 'game.png'
+    const assets = [
+        'assets/images/parallax/floppy.png',
+        'assets/images/parallax/crt.png',
+        'assets/images/parallax/game.png',
+        'assets/images/parallax/vhs.png'
+    ];
+
+    const hardwareCount = 12;
+    const pixelCount = 20;
+    const debris = [];
+
+    // Create Hardware Debris
+    for (let i = 0; i < hardwareCount; i++) {
+        const item = document.createElement('img');
+        const assetIndex = i % assets.length;
+        
+        item.src = assets[assetIndex];
+        item.className = 'debris-item';
+        
+        // Safety Catch: Hide broken images
+        item.onerror = () => item.style.display = 'none';
+        
+        const depth = Math.random() * 0.8 + 0.1;
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 300; 
+        const scale = 0.5 + Math.random() * 1.5;
+        const rotation = Math.random() * 360;
+
+        item.style.left = `${startX}%`;
+        item.style.top = `${startY}%`;
+        item.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+        item.style.opacity = (1 - depth) * 0.3 + 0.05;
+        
+        container.appendChild(item);
+        
+        debris.push({
+            el: item,
+            depth: depth,
+            y: startY,
+            rotation: rotation,
+            isFragment: false
+        });
+    }
+
+    // Create Digital Fragments (Pixels/Artifacts)
+    for (let j = 0; j < pixelCount; j++) {
+        const frag = document.createElement('div');
+        frag.className = 'pixel-fragment';
+        
+        const depth = Math.random() * 0.5 + 0.2;
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 400;
+        const size = Math.random() * 6 + 2;
+
+        frag.style.width = `${size}px`;
+        frag.style.height = `${size}px`;
+        frag.style.left = `${startX}%`;
+        frag.style.top = `${startY}%`;
+        frag.style.opacity = (1 - depth) * 0.4;
+        
+        container.appendChild(frag);
+        
+        debris.push({
+            el: frag,
+            depth: depth,
+            y: startY,
+            rotation: 0,
+            isFragment: true
+        });
+    }
+
+    function updateDebris() {
+        const scrolled = window.pageYOffset;
+        
+        debris.forEach(obj => {
+            const driftY = (scrolled * obj.depth * -0.5);
+            const driftX = Math.sin(scrolled * 0.002 + obj.y) * 20;
+
+            if (!obj.isFragment) {
+                const tilt = Math.cos(scrolled * 0.001) * 15;
+                obj.el.style.transform = `translate(${driftX}px, ${driftY}px) rotate(${obj.rotation + tilt}deg)`;
+            } else {
+                obj.el.style.transform = `translate(${driftX * 0.5}px, ${driftY}px)`;
+            }
+        });
+    }
+
+    window.addEventListener('scroll', () => {
+        window.requestAnimationFrame(updateDebris);
+    });
+
+    updateDebris(); // Initial positions
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     renderTechStack();
     renderProject();
@@ -304,4 +487,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initContactForm(); 
     initThemeToggle();
     initScrollReveal();
+    initParallax();
+    initDebrisField();
 });

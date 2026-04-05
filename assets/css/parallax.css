@@ -1,0 +1,57 @@
+/* --- MODERN RETRO PARALLAX SYSTEM --- */
+
+/* 1. LAYER DEPTH TOKENS */
+:root {
+    --parallax-speed-bg: 0.05;
+    --parallax-speed-chassis: 0.15;
+    --parallax-speed-content: 0.25;
+    --parallax-speed-accent: 0.4;
+}
+
+/* 2. BASE PARALLAX STYLES */
+.parallax-container {
+    perspective: 1000px;
+    overflow-x: hidden;
+}
+
+/* 3. HARDWARE DEPTH (TV BEZEL VS CONTENT) */
+.tv-set {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+}
+
+.screen-bezel {
+    transform: translateZ(20px); /* Brings the bezel forward */
+}
+
+.crt-screen {
+    transform: translateZ(-10px); /* Pushes the screen back */
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.9), 0 0 20px rgba(0,255,65,0.05);
+}
+
+/* 4. KINETIC HEADERS */
+section h2 {
+    display: inline-block;
+    will-change: transform;
+}
+
+/* 5. PHOSPHOR DRIFT (BACKGROUND) */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background-image: 
+        radial-gradient(circle at center, rgba(0, 255, 65, 0.03) 0%, transparent 70%),
+        repeating-linear-gradient(0deg, transparent 0px, rgba(0, 0, 0, 0.1) 1px, transparent 2px);
+    background-size: 100% 100%, 100% 4px;
+    z-index: -1;
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* 6. UTILITY CLASSES FOR JS ENGINE */
+[data-parallax] {
+    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
